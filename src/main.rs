@@ -6,9 +6,13 @@
 use patchainlib::*;
 
 fn main() {
-    let bl = Block::new(0, 0, vec![0; 32], 0, "First block!".to_owned());
+    let mut bl = Block::new(0, 0, vec![0; 32], 0, "First block!".to_owned(), 1);
     println!("{:?}", &bl);
 
-    let h = bl.hash();
-    println!("{:?}", &h);
+    println!("{}",&bl.nonce);
+
+    bl.mine();
+    println!("{:?}", &bl);
+    
+    println!("{}",&bl.nonce);
 }
