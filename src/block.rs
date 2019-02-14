@@ -51,13 +51,16 @@ impl Block {
     pub fn mine(&mut self) {
         for nonce_attempt in 0..(u64::max_value()) {
             self.nonce = nonce_attempt;
-            let hash = self.hash();
 
-            if hash.ends_with(vec![0; self.difficulty as usize].as_slice()) {
-                self.hash = hash;
+            if self.verify_pow() {
+                self.hash = self.hash();
                 return;
             }
         }
+    }
+
+    pub fn verify_pow(&self) -> bool {
+        self.hash().ends_with(vec![0; self.difficulty as usize].as_slice())
     }
 }
 
