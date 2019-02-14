@@ -10,7 +10,8 @@ Nonce - a special number used for mining (PoW verification)
 Previous block hash - cryptographic fingerprint of previous block
 Hash - cryptographic fingerprint of all of the above data concatenated together
 */
-use std::fmt::{self,*};
+use std::{fmt::{self,*},};
+use super::*;
 
 type BlockHash = Vec<u8>;
 
@@ -43,5 +44,16 @@ impl Block {
             nonce,
             payload,
         }
+    }
+}
+
+impl Hashable for Block {
+    fn bytes(&self) -> Vec<u8> {
+        let mut bytes = vec![];
+        bytes.extend(&self.index.to_be_bytes());
+        bytes.extend(&self.timestamp.to_be_bytes());
+        bytes.extend(&self.prev_block_hash);
+        bytes.extend((&self.payload).as_bytes());
+        bytes
     }
 }
