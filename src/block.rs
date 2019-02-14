@@ -27,7 +27,7 @@ impl Debug for Block {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "Block[{}]: {} at: {} with: {}", 
         &self.index,
-        hex::encode(&self.hash),
+        &hex::encode(&self.hash),
         &self.timestamp,
         &self.payload)
     }
@@ -38,7 +38,7 @@ impl Block {
         Block {
             index,
             timestamp,
-            hash: vec![0, 32],
+            hash: vec![0; 32],
             prev_block_hash,
             nonce,
             payload,

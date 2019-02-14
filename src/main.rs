@@ -7,4 +7,5 @@ use patchainlib::*;
 
 fn main() {
     let bl = Block::new(0, 0, vec![0; 32], 0, "First block".to_owned());
+    println!("{:?}", &bl);
 }
