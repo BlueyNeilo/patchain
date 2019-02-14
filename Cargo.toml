@@ -4,4 +4,14 @@ version = "0.1.0"
 authors = ["Patrick Neilson <bluey.neilo@gmail.com>"]
 edition = "2018"
 
+[lib]
+name = "patchainlib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "patchainbin"
+path = "src/main.rs"
+
 [dependencies]
+hex = "0.3.2"
+crypto-hash = "0.3.3"
