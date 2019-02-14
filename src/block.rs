@@ -10,6 +10,8 @@ Nonce - a special number used for mining (PoW verification)
 Previous block hash - cryptographic fingerprint of previous block
 Hash - cryptographic fingerprint of all of the above data concatenated together
 */
+use std::fmt::{self,*};
+
 type BlockHash = Vec<u8>;
 
 pub struct Block {
@@ -21,9 +23,18 @@ pub struct Block {
     pub payload: String,
 }
 
+impl Debug for Block {
+    fn fmt(&self, f: &mut Formatter) -> fmt::Result {
+        write!(f, "Block[{}]: {} at: {} with: {}", 
+        &self.index,
+        hex::encode(&self.hash),
+        &self.timestamp,
+        &self.payload)
+    }
+}
+
 impl Block {
-    pub fn new(index: u32, timestamp: u128, prev_block_hash: BlockHash, nonce: u64, payload: String)
-    ) -> Self {
+    pub fn new(index: u32, timestamp: u128, prev_block_hash: BlockHash, nonce: u64, payload: String) -> Self {
         Block {
             index,
             timestamp,

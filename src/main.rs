@@ -3,7 +3,8 @@
 //
 //A blockchain side project started in Feburary 2019
 //
+use patchainlib::*;
 
 fn main() {
-    println!("Hello, world!");
+    let bl = Block::new(0, 0, vec![0; 32], 0, "First block".to_owned());
 }
