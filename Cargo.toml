@@ -1,7 +1,7 @@
 [package]
 name = "patchain"
 version = "0.1.0"
-authors = ["Patrick <pnei0001@student.monash.edu>"]
+authors = ["Patrick Neilson <bluey.neilo@gmail.com>"]
 edition = "2018"
 
 [dependencies]
