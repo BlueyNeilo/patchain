@@ -18,7 +18,7 @@ type BlockHash = Vec<u8>;
 pub struct Block {
     pub index: u32,
     pub timestamp: u128,
-    pub hash: BlockHash,
+    pub block_hash: BlockHash,
     pub prev_block_hash: BlockHash,
     pub nonce: u64,
     pub payload: String,
@@ -29,7 +29,7 @@ impl Debug for Block {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "Block[{}]: {} at: {} with: {}", 
         &self.index,
-        &hex::encode(&self.hash),
+        &hex::encode(&self.block_hash),
         &self.timestamp,
         &self.payload)
     }
@@ -40,7 +40,7 @@ impl Block {
         Block {
             index,
             timestamp,
-            hash: vec![0; 32],
+            block_hash: vec![0; 32],
             prev_block_hash,
             nonce,
             payload,
@@ -54,7 +54,7 @@ impl Block {
             let hash = self.hash();
 
             if hash.ends_with(vec![0; self.difficulty as usize].as_slice()) {
-                self.hash = hash;
+                self.block_hash = hash;
                 return;
             }
         }
