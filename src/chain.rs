@@ -23,7 +23,7 @@ impl Chain {
                     println!("Time did not increase");
                     return false
                 }
-                else if block.prev_block_hash != prev_block.hash {
+                else if block.prev_block_hash != prev_block.block_hash {
                     println!("Hash mismatch");
                     return false
                 }
