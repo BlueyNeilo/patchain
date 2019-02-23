@@ -53,9 +53,10 @@ impl Block {
     pub fn mine(&mut self) {
         for nonce_attempt in 0..(u64::max_value()) {
             self.nonce = nonce_attempt;
-            self.rehash();
 
             if self.verify_pow() {
+                self.rehash();
+
                 return;
             }
         }
@@ -63,8 +64,7 @@ impl Block {
 
     //Verify that the proof of work (PoW) has been done to find a valid nonce
     pub fn verify_pow(&self) -> bool {
-        return self.block_hash.ends_with(vec![0; self.difficulty as usize].as_slice())
-    }
+        self.hash().ends_with(vec![0; self.difficulty as usize].as_slice())
 
     //Refresh the hash to reflect the block's information
     fn rehash(&mut self) {
