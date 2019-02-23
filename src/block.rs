@@ -37,7 +37,7 @@ impl Debug for Block {
 
 impl Block {
     pub fn new(index: u32, timestamp: u128, prev_block_hash: BlockHash, nonce: u64, payload: String, difficulty: u8) -> Self {
-        let mut newblock = Block {
+        Block {
             index,
             timestamp,
             block_hash: vec![0; 32],
@@ -45,9 +45,7 @@ impl Block {
             nonce,
             payload,
             difficulty,
-        };
-        newblock.rehash();
-        newblock
+        }
     }
     //Need [difficulty] number of 0s to satisfy nonce
     pub fn mine(&mut self) {
