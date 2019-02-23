@@ -65,6 +65,7 @@ impl Block {
     //Verify that the proof of work (PoW) has been done to find a valid nonce
     pub fn verify_pow(&self) -> bool {
         self.hash().ends_with(vec![0; self.difficulty as usize].as_slice())
+    }
 
     //Refresh the hash to reflect the block's information
     fn rehash(&mut self) {
