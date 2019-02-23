@@ -37,7 +37,7 @@ impl Debug for Block {
 
 impl Block {
     pub fn new(index: u32, timestamp: u128, prev_block_hash: BlockHash, nonce: u64, payload: String, difficulty: u8) -> Self {
-        Block {
+        let mut newblock = Block {
             index,
             timestamp,
             block_hash: vec![0; 32],
@@ -45,13 +45,15 @@ impl Block {
             nonce,
             payload,
             difficulty,
-        }
+        };
+        newblock.rehash();
+        newblock
     }
     //Need [difficulty] number of 0s to satisfy nonce
     pub fn mine(&mut self) {
         for nonce_attempt in 0..(u64::max_value()) {
             self.nonce = nonce_attempt;
-            self.block_hash = self.hash();
+            self.rehash();
 
             if self.verify_pow() {
                 return;
@@ -62,6 +64,11 @@ impl Block {
     //Verify that the proof of work (PoW) has been done to find a valid nonce
     pub fn verify_pow(&self) -> bool {
         return self.block_hash.ends_with(vec![0; self.difficulty as usize].as_slice())
+    }
+
+    //Refresh the hash to reflect the block's information
+    fn rehash(&mut self) {
+        self.block_hash = self.hash()
     }
 }
 
