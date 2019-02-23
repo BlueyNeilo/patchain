@@ -1,4 +1,6 @@
 use super::*;
+
+//The blockchain - Chain of blocks in one place
 pub struct Chain {
     pub blocks: Vec<Block>,
 }
