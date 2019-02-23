@@ -18,7 +18,7 @@ type BlockHash = Vec<u8>;
 pub struct Block {
     pub index: u32,
     pub timestamp: u128,
-    pub hash: BlockHash,
+    pub block_hash: BlockHash,
     pub prev_block_hash: BlockHash,
     pub nonce: u64,
     pub payload: String,
@@ -29,7 +29,7 @@ impl Debug for Block {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
         write!(f, "Block[{}]: {} at: {} with: {}", 
         &self.index,
-        &hex::encode(&self.hash),
+        &hex::encode(&self.block_hash),
         &self.timestamp,
         &self.payload)
     }
@@ -37,15 +37,17 @@ impl Debug for Block {
 
 impl Block {
     pub fn new(index: u32, timestamp: u128, prev_block_hash: BlockHash, nonce: u64, payload: String, difficulty: u8) -> Self {
-        Block {
+        let mut newblock = Block {
             index,
             timestamp,
-            hash: vec![0; 32],
+            block_hash: vec![0; 32],
             prev_block_hash,
             nonce,
             payload,
             difficulty,
-        }
+        };
+        newblock.rehash();
+        newblock
     }
     //Need [difficulty] number of 0s to satisfy nonce
     pub fn mine(&mut self) {
@@ -53,14 +55,20 @@ impl Block {
             self.nonce = nonce_attempt;
 
             if self.verify_pow() {
-                self.hash = self.hash();
+                self.rehash();
+
                 return;
             }
         }
     }
 
+    //Verify that the proof of work (PoW) has been done to find a valid nonce
     pub fn verify_pow(&self) -> bool {
         self.hash().ends_with(vec![0; self.difficulty as usize].as_slice())
+
+    //Refresh the hash to reflect the block's information
+    fn rehash(&mut self) {
+        self.block_hash = self.hash()
     }
 }
 
