@@ -51,13 +51,17 @@ impl Block {
     pub fn mine(&mut self) {
         for nonce_attempt in 0..(u64::max_value()) {
             self.nonce = nonce_attempt;
-            let hash = self.hash();
+            self.block_hash = self.hash();
 
-            if hash.ends_with(vec![0; self.difficulty as usize].as_slice()) {
-                self.block_hash = hash;
+            if self.verify_pow() {
                 return;
             }
         }
+    }
+
+    //Verify that the proof of work (PoW) has been done to find a valid nonce
+    pub fn verify_pow(&self) -> bool {
+        return self.block_hash.ends_with(vec![0; self.difficulty as usize].as_slice())
     }
 }
 
