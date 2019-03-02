@@ -4,15 +4,30 @@
 //A blockchain side project started in Feburary 2019
 //
 use patchainlib::*;
+extern crate time;
+use time::precise_time_ns as now;
 
 fn main() {
-    let mut bl = Block::new(0, 0, vec![0; 32], 0, "First block!".to_owned(), 1);
-    println!("{:?}", &bl);
-
-    println!("{}",&bl.nonce);
-
-    bl.mine();
-    println!("{:?}", &bl);
+    let difficulty = 1;
+    let ledgersize = 10;
     
-    println!("{}",&bl.nonce);
+    let mut firstblock = Block::new(0, now() as u128, vec![0; 32], 0, "First block!".to_owned(), difficulty);
+    firstblock.mine();
+    println!("First block mined: {:?}", &firstblock);
+    let mut last_hash = firstblock.block_hash.clone();
+
+    let mut blockchain = Chain {
+        blocks: vec![firstblock]
+    };
+
+    for i in 1..=ledgersize {
+        let mut block = Block::new(i, now() as u128, last_hash, 0, "Another block..".to_owned(), difficulty);
+        block.mine();
+        println!("Block mined: {:?}", &block);
+        last_hash = block.block_hash.clone();
+        blockchain.blocks.push(block);
+    };
+    //blockchain.blocks[1].payload = "Test".to_owned();
+    blockchain.verify();
+
 }
