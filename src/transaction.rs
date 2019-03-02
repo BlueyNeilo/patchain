@@ -1,4 +1,5 @@
 use super::*;
+use std::collections::HashSet;
 
 type Address = String;
 
@@ -20,6 +21,38 @@ impl Hashable for Output {
 pub struct Transaction {
     pub inputs: Vec<Output>,
     pub outputs: Vec<Output>,
+}
+
+impl Transaction {
+    pub fn input_valuesum(&self) -> u64 {
+        self.valuesum(&self.inputs)
+    }
+
+    pub fn output_valuesum(&self) -> u64 {
+        self.valuesum(&self.outputs)
+    }
+
+    pub fn input_hashes(&self) -> HashSet<Vec<u8>> {
+        self.hashes(&self.inputs)
+    }
+
+    pub fn output_hashes(&self) -> HashSet<Vec<u8>> {
+        self.hashes(&self.outputs)
+    }
+    
+    fn valuesum(&self, outs: &Vec<Output>) -> u64 {
+        outs.iter().map(|o| o.value).sum()
+    }
+    
+    fn hashes(&self, outs: &Vec<Output>) -> HashSet<Vec<u8>> {
+        outs.iter()
+            .map(|o| o.hash())
+            .collect::<HashSet<Vec<u8>>>()
+    }
+
+    pub fn is_coinbase(&self) -> bool {
+        self.inputs.len() == 0
+    }
 }
 
 impl Hashable for Transaction {
