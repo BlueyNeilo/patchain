@@ -13,13 +13,13 @@ Hash - cryptographic fingerprint of all of the above data concatenated together
 use std::{fmt::{self,*},};
 use super::*;
 
-type BlockHash = Vec<u8>;
+type Hash = Vec<u8>;
 
 pub struct Block {
     pub index: u32,
     pub timestamp: u128,
-    pub block_hash: BlockHash,
-    pub prev_block_hash: BlockHash,
+    pub block_hash: Hash,
+    pub prev_block_hash: Hash,
     pub nonce: u64,
     pub payload: String,
     pub difficulty: u8,
@@ -36,7 +36,7 @@ impl Debug for Block {
 }
 
 impl Block {
-    pub fn new(index: u32, timestamp: u128, prev_block_hash: BlockHash, nonce: u64, payload: String, difficulty: u8) -> Self {
+    pub fn new(index: u32, timestamp: u128, prev_block_hash: Hash, nonce: u64, payload: String, difficulty: u8) -> Self {
         Block {
             index,
             timestamp,
