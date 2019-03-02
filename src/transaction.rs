@@ -9,7 +9,7 @@ pub struct Output {
 }
 
 impl Hashable for Output {
-    fn bytes (&self) -> Vec<u8> {
+    fn bytes (&self) -> Hash {
         let mut bytes = vec![];
         bytes.extend(self.to_addr.as_bytes());
         bytes.extend(&self.value.to_be_bytes());
@@ -32,11 +32,11 @@ impl Transaction {
         self.valuesum(&self.outputs)
     }
 
-    pub fn input_hashes(&self) -> HashSet<Vec<u8>> {
+    pub fn input_hashes(&self) -> HashSet<Hash> {
         self.hashes(&self.inputs)
     }
 
-    pub fn output_hashes(&self) -> HashSet<Vec<u8>> {
+    pub fn output_hashes(&self) -> HashSet<Hash> {
         self.hashes(&self.outputs)
     }
     
@@ -44,10 +44,10 @@ impl Transaction {
         outs.iter().map(|o| o.value).sum()
     }
     
-    fn hashes(&self, outs: &Vec<Output>) -> HashSet<Vec<u8>> {
+    fn hashes(&self, outs: &Vec<Output>) -> HashSet<Hash> {
         outs.iter()
             .map(|o| o.hash())
-            .collect::<HashSet<Vec<u8>>>()
+            .collect::<HashSet<Hash>>()
     }
 
     pub fn is_coinbase(&self) -> bool {
@@ -56,13 +56,13 @@ impl Transaction {
 }
 
 impl Hashable for Transaction {
-    fn bytes(&self) -> Vec<u8> {
+    fn bytes(&self) -> Hash {
         let mut bytes = vec![];
         bytes.extend(
             self.inputs
                 .iter()
                 .flat_map(|input| input.bytes())
-                .collect::<Vec<u8>>()
+                .collect::<Hash>()
         );
         
         bytes

@@ -13,8 +13,6 @@ Hash - cryptographic fingerprint of all of the above data concatenated together
 use std::{fmt::{self,*},};
 use super::*;
 
-type Hash = Vec<u8>;
-
 pub struct Block {
     pub index: u32,
     pub timestamp: u128,
@@ -72,7 +70,7 @@ impl Block {
 }
 
 impl Hashable for Block {
-    fn bytes(&self) -> Vec<u8> {
+    fn bytes(&self) -> Hash {
         let mut bytes = vec![];
         bytes.extend(&self.index.to_be_bytes());
         bytes.extend(&self.timestamp.to_be_bytes());
