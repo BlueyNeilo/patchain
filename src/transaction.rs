@@ -10,11 +10,7 @@ pub struct Output {
 
 impl Hashable for Output {
     fn bytes (&self) -> Hash {
-        let mut bytes = vec![];
-        bytes.extend(self.to_addr.as_bytes());
-        bytes.extend(&self.value.to_be_bytes());
-
-        bytes
+        vec![self.to_addr.bytes(), self.value.bytes()].bytes()
     }
 }
 
@@ -57,14 +53,6 @@ impl Transaction {
 
 impl Hashable for Transaction {
     fn bytes(&self) -> Hash {
-        let mut bytes = vec![];
-        bytes.extend(
-            self.inputs
-                .iter()
-                .flat_map(|input| input.bytes())
-                .collect::<Hash>()
-        );
-        
-        bytes
+        self.inputs.bytes()
     }
 }
