@@ -55,3 +55,8 @@ impl Hashable for String {
         self.as_bytes().to_vec()
     }
 }
+
+//Helper function for generating Hashable implementation for structs
+pub fn struct_bytes(parts: Vec<Hash>) -> Hash {
+    parts.into_iter().flatten().collect::<Hash>()
+}
