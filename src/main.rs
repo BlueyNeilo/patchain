@@ -11,23 +11,23 @@ fn main() {
     let difficulty = 1;
     let ledgersize = 10;
     
-    let mut firstblock = Block::new(0, now() as u128, vec![0; 32], 0, "First block!".to_owned(), difficulty);
-    firstblock.mine();
-    println!("First block mined: {:?}", &firstblock);
-    let mut last_hash = firstblock.block_hash.clone();
+    // let mut firstblock = Block::new(0, now() as u128, vec![0; 32], 0, "First block!".to_owned(), difficulty);
+    // firstblock.mine();
+    // println!("First block mined: {:?}", &firstblock);
+    // let mut last_hash = firstblock.block_hash.clone();
 
-    let mut blockchain = Chain {
-        blocks: vec![firstblock]
-    };
+    // let mut blockchain = Chain {
+    //     blocks: vec![firstblock]
+    // };
 
-    for i in 1..=ledgersize {
-        let mut block = Block::new(i, now() as u128, last_hash, 0, "Another block..".to_owned(), difficulty);
-        block.mine();
-        println!("Block mined: {:?}", &block);
-        last_hash = block.block_hash.clone();
-        blockchain.blocks.push(block);
-    };
-    //blockchain.blocks[1].payload = "Test".to_owned();
-    blockchain.verify();
+    // for i in 1..=ledgersize {
+    //     let mut block = Block::new(i, now() as u128, last_hash, 0, "Another block..".to_owned(), difficulty);
+    //     block.mine();
+    //     println!("Block mined: {:?}", &block);
+    //     last_hash = block.block_hash.clone();
+    //     blockchain.blocks.push(block);
+    // };
+    // //blockchain.blocks[1].payload = "Test".to_owned();
+    // blockchain.verify();
 
 }
