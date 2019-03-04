@@ -3,7 +3,7 @@ use std::ops::Deref;
 pub type Hash = Vec<u8>;
 /*
     Implement hash for:
-Deref<Target = [T]> where T: Hashable (collections of hashables)
+Vec<T: Hashable>
 u8
 u32
 u64
@@ -19,12 +19,10 @@ pub trait Hashable {
     }
 }
 
-//Implement hashable for anything that can be iterated over as hashables
-impl<T> Hashable for Deref<Target = [T]> 
-        where T: Hashable {
+impl<T: Hashable> Hashable for Vec<T> {
     fn bytes(&self) -> Hash {
         self.iter()
-            .flat_map(|data| data.hash())
+            .flat_map(|data| data.bytes())
             .collect::<Hash>()
     }
 }
@@ -54,9 +52,4 @@ impl Hashable for String {
     fn bytes(&self) -> Hash {
         self.as_bytes().to_vec()
     }
-}
-
-//Helper function for generating Hashable implementation for structs
-pub fn struct_bytes(parts: Vec<Hash>) -> Hash {
-    parts.into_iter().flatten().collect::<Hash>()
 }
