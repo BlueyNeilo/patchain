@@ -71,16 +71,13 @@ impl Block {
 
 impl Hashable for Block {
     fn bytes(&self) -> Hash {
-        let mut bytes = vec![];
-        bytes.extend(&self.index.to_be_bytes());
-        bytes.extend(&self.timestamp.to_be_bytes());
-        bytes.extend(&self.prev_block_hash);
-        bytes.extend(&self.nonce.to_be_bytes());
-        bytes.extend(&self.transactions.iter()
-            .flat_map(|transaction| transaction.bytes())
-            .collect::<Hash>()
-        );
-        bytes.extend(&self.difficulty.to_be_bytes());
-        bytes
+        vec![
+            self.index.bytes(),
+            self.timestamp.bytes(),
+            self.prev_block_hash.bytes(),
+            self.nonce.bytes(),
+            self.transactions.bytes(),
+            self.difficulty.bytes(),
+        ].bytes()
     }
 }
