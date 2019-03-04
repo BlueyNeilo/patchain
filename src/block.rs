@@ -13,37 +13,35 @@ Hash - cryptographic fingerprint of all of the above data concatenated together
 use std::{fmt::{self,*},};
 use super::*;
 
-type BlockHash = Vec<u8>;
-
 pub struct Block {
     pub index: u32,
     pub timestamp: u128,
-    pub block_hash: BlockHash,
-    pub prev_block_hash: BlockHash,
+    pub block_hash: Hash,
+    pub prev_block_hash: Hash,
     pub nonce: u64,
-    pub payload: String,
+    pub transactions: Vec<Transaction>,
     pub difficulty: u8,
 }
 
 impl Debug for Block {
     fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-        write!(f, "Block[{}]: {} at: {} with: {}", 
+        write!(f, "Block[{}]: {} at: {} with: {} transactions", 
         &self.index,
         &hex::encode(&self.block_hash),
         &self.timestamp,
-        &self.payload)
+        &self.transactions.len())
     }
 }
 
 impl Block {
-    pub fn new(index: u32, timestamp: u128, prev_block_hash: BlockHash, nonce: u64, payload: String, difficulty: u8) -> Self {
+    pub fn new(index: u32, timestamp: u128, prev_block_hash: Hash, nonce: u64, transactions: Vec<Transaction>, difficulty: u8) -> Self {
         Block {
             index,
             timestamp,
             block_hash: vec![0; 32],
             prev_block_hash,
             nonce,
-            payload,
+            transactions,
             difficulty,
         }
     }
@@ -72,13 +70,16 @@ impl Block {
 }
 
 impl Hashable for Block {
-    fn bytes(&self) -> Vec<u8> {
+    fn bytes(&self) -> Hash {
         let mut bytes = vec![];
         bytes.extend(&self.index.to_be_bytes());
         bytes.extend(&self.timestamp.to_be_bytes());
         bytes.extend(&self.prev_block_hash);
         bytes.extend(&self.nonce.to_be_bytes());
-        bytes.extend((&self.payload).as_bytes());
+        bytes.extend(&self.transactions.iter()
+            .flat_map(|transaction| transaction.bytes())
+            .collect::<Hash>()
+        );
         bytes.extend(&self.difficulty.to_be_bytes());
         bytes
     }
