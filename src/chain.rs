@@ -2,6 +2,7 @@ use super::*;
 use std::collections::HashSet;
 
 //Error types for chain verification
+#[derive(Debug)]
 pub enum BlockValidationErr {
     MismatchedIndex,
     InvalidHash,
@@ -20,6 +21,13 @@ pub struct Chain {
 }
 
 impl Chain {
+    pub fn new() -> Self {
+        Chain {
+            blocks: vec![],
+            unspent_outputs: HashSet::new()
+        }
+    }
+
     pub fn update_with_block (&mut self, block: Block) -> Result<(), BlockValidationErr> {
         let i = self.blocks.len();
         //Verify index
