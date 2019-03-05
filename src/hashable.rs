@@ -1,5 +1,3 @@
-use std::ops::Deref;
-
 pub type Hash = Vec<u8>;
 /*
     Implement hash for:
